@@ -17,7 +17,6 @@ df_registros = pd.DataFrame(
     ]
 )
 
-
 # Título del formulario
 st.title("Formulario de Retroalimentación de Pasajeros")
 
