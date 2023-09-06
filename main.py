@@ -14,11 +14,11 @@ from sklearn.preprocessing import MinMaxScaler
 
 pd.set_option("display.max_columns", None)
 warnings.filterwarnings("ignore")
-train_data = pd.read_csv("data/airline_passenger_satisfaction.csv")
+train_data = pd.read_csv("data/airline_passenger_satisfaction.csv")  # ya
 # primeros_100_registros = train_data.iloc[:100]
 # test_data = pd.DataFrame(primeros_100_registros)
-primer_registro = train_data.iloc[0]
-test_data = pd.DataFrame([primer_registro])
+primer_registro = train_data.iloc[0]  # ya
+test_data = pd.DataFrame([primer_registro])  # ya
 
 
 # obtenemos un arreglo con los nombres de las variables segun su tipo
@@ -26,13 +26,13 @@ imputer_cols = [
     cname
     for cname in train_data.columns
     if train_data[cname].dtype in ["int64", "float64"]
-]
+]  # ya
 categorical_cols = [
     cname for cname in train_data.columns if train_data[cname].dtype == "object"
-]
+]  # ya
 
 
-imputer = SimpleImputer(strategy="mean")
+imputer = SimpleImputer(strategy="mean")  # ya esta en la funcion
 imputer.fit(train_data[imputer_cols])
 train_data[imputer_cols] = imputer.transform(train_data[imputer_cols])
 test_data[imputer_cols] = imputer.transform(test_data[imputer_cols])
