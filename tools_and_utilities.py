@@ -41,8 +41,8 @@ def create_passenger_satisfaction_form():
         "Type of Travel", ["Personal Travel", "Business Travel"]
     )
     data["Class"] = st.selectbox("Class", ["Business", "Eco", "Eco Plus"])
-    data["Flight distance"] = st.number_input(
-        "Flight distance", min_value=31, max_value=4982, value=31, step=1, format="%d"
+    data["Flight Distance"] = st.number_input(
+        "Flight Distance", min_value=31, max_value=4982, value=31, step=1, format="%d"
     )
 
     satisfaction_columns = [
@@ -57,7 +57,7 @@ def create_passenger_satisfaction_form():
         "On-board service",
         "Leg room service",
         "Baggage handling",
-        "Check-in service",
+        "Checkin service",
         "Inflight service",
         "Cleanliness",
     ]
