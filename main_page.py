@@ -1,7 +1,6 @@
 import pickle
 import streamlit as st
 import pandas as pd
-from main import prediction_model
 from tools_and_utilities import (
     validate_age,
     validate_flight_distance,
@@ -9,11 +8,14 @@ from tools_and_utilities import (
     create_passenger_satisfaction_form,
 )
 import os
+from database import connect_to_mongodb
 
 os.system("cls")
 st.title("Formulario de Satisfacción del Pasajero")
 
 form_data = create_passenger_satisfaction_form()
+
+
 
 if st.button("Enviar"):
     if (
@@ -22,9 +24,10 @@ if st.button("Enviar"):
         and validate_delay(form_data["Departure Delay in Minutes"])
         and validate_delay(form_data["Arrival Delay in Minutes"])
     ):
-        # test_data = pd.DataFrame([form_data])
-        # st.subheader("Último registro agregado:")
-        # st.write(test_data.tail(1))
+        test_data = pd.DataFrame([form_data])
+        
+        st.subheader("Último registro agregado:")
+        st.write(test_data.tail(1))
 
         with open("model.pkl", "rb") as model_file:
             model = pickle.load(model_file)
@@ -33,10 +36,10 @@ if st.button("Enviar"):
             preprocessor = pickle.load(preprocessor_file)
 
         # para probarlo con 100 registros ojo hay que descomentar donde test data obtiene los datos de form_data
-        train_data = pd.read_csv("data/airline_passenger_satisfaction.csv")
-        primeros_100_registros = train_data.iloc[:100]
-        test_data = pd.DataFrame(primeros_100_registros)
-        test_data.drop(["satisfaction"], axis=1, inplace=True)
+        # train_data = pd.read_csv("data/airline_passenger_satisfaction.csv")
+        # primeros_100_registros = train_data.iloc[:100]
+        # test_data = pd.DataFrame(primeros_100_registros)
+        # test_data.drop(["satisfaction"], axis=1, inplace=True)
         #
 
         # ojo No se necesita la variable objetivo para la predicción
@@ -49,3 +52,12 @@ if st.button("Enviar"):
         print(predictions)
 
         st.write(f"El resultado es: {predictions}")
+
+        # Conexión a MongoDB
+        db = connect_to_mongodb()
+        if db is None:
+            st.error("No se pudo conectar a la base de datos. Verifica la configuración de MongoDB.")
+        else:
+            collection = db["satisfaccion_pasajeros"]
+        collection.insert_one(form_data)
+        
