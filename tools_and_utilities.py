@@ -24,12 +24,12 @@ def validate_delay(minutes):
 
 def create_passenger_satisfaction_form():
     data = {
-        "Unnamed: 0": 0,
-        "id": 0,
-        "satisfaction": "nada",
+        # "Unnamed: 0": 0,
+        # "id": 0,
+        # "satisfaction": "nada",
     }
 
-    data["id"] = st.number_input("ID")
+    # data["id"] = st.number_input("ID")
     data["Gender"] = st.selectbox("Gender", ["Female", "Male"])
     data["Customer Type"] = st.selectbox(
         "Customer Type", ["Loyal customer", "disloyal customer"]
