@@ -58,6 +58,6 @@ if st.button("Enviar"):
         if db is None:
             st.error("No se pudo conectar a la base de datos. Verifica la configuración de MongoDB.")
         else:
-            collection = db["satisfaccion_pasajeros"]
+            collection = db["satisfaction_users"]
         collection.insert_one(form_data)
         
