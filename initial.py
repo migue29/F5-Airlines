@@ -7,14 +7,13 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from data_utils import fill_null_with_mode, train_model
+from data_utils import train_model
 import pickle
 
 train_data = pd.read_csv("data/airline_passenger_satisfaction.csv")
 df = pd.DataFrame(train_data)
-X = df.drop("satisfaction", axis=1)
+X = df.drop(["satisfaction", "Unnamed: 0" , "id"], axis=1)
 y = df["satisfaction"]
-print("resultado")
 # Entrenar el modelo
 model, preprocessor = train_model(X, y)
 
