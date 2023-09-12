@@ -9,7 +9,6 @@ pandasgui = "*"
 streamlit = "*"
 pymongo = "*"
 pandas = "*"
-pickle = "*"
 
 [dev-packages]
 
