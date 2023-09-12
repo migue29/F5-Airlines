@@ -13,11 +13,19 @@ from database import connect_to_mongodb
 os.system("cls")
 st.title("Formulario de Satisfacción del Pasajero")
 
+# The `create_passenger_satisfaction_form()` function is creating a dictionary that represents a form
+# for collecting passenger satisfaction data. This form includes fields such as age, flight distance,
+# departure delay, and arrival delay. The function returns this dictionary, which is stored in the
+# `form_data` variable.
+
 form_data = create_passenger_satisfaction_form()
 
 
-
 if st.button("Enviar"):
+    # This `if` statement is checking if the values entered in the form for age, flight distance,
+    # departure delay, and arrival delay are valid. It does this by calling the respective validation
+    # functions (`validate_age`, `validate_flight_distance`, `validate_delay`) and passing the
+    # corresponding form data as arguments.
     if (
         validate_age(form_data["Age"])
         and validate_flight_distance(form_data["Flight Distance"])
@@ -25,9 +33,6 @@ if st.button("Enviar"):
         and validate_delay(form_data["Arrival Delay in Minutes"])
     ):
         test_data = pd.DataFrame([form_data])
-        
-        st.subheader("Último registro agregado:")
-        st.write(test_data.tail(1))
 
         with open("model.pkl", "rb") as model_file:
             model = pickle.load(model_file)
@@ -37,27 +42,22 @@ if st.button("Enviar"):
 
         # para probarlo con 100 registros ojo hay que descomentar donde test data obtiene los datos de form_data
         # train_data = pd.read_csv("data/airline_passenger_satisfaction.csv")
-        # primeros_100_registros = train_data.iloc[:100]
+        # primeros_100_registros = train_data.iloc[0:100]
         # test_data = pd.DataFrame(primeros_100_registros)
-        # test_data.drop(["satisfaction"], axis=1, inplace=True)
-        #
+        # test_data.drop(["satisfaction", "Unnamed: 0", "id"], axis=1, inplace=True)
 
-        # ojo No se necesita la variable objetivo para la predicción
         X_test_data_preprocessed = preprocessor.transform(test_data)
 
-        # Realizar la predicción
         predictions = model.predict(X_test_data_preprocessed)
+        st.info(
+            f"Nuestra aplicacion ha analizado que usted se encuentra: {predictions}, con nuestro servicio"
+        )
 
-        # Mostrar el resultado de la predicción
-        print(predictions)
-
-        st.write(f"El resultado es: {predictions}")
-
-        # Conexión a MongoDB
         db = connect_to_mongodb()
         if db is None:
-            st.error("No se pudo conectar a la base de datos. Verifica la configuración de MongoDB.")
+            st.error(
+                "No se pudo conectar a la base de datos. Verifica la configuración de MongoDB."
+            )
         else:
             collection = db["satisfaction_users"]
-        collection.insert_one(form_data)
-        
+            collection.insert_one(form_data)
