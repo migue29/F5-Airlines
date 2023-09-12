@@ -6,9 +6,10 @@ name = "pypi"
 [packages]
 scikit-learn = "*"
 pandasgui = "*"
-streamlit = "*"
 pymongo = "*"
+streamlit = "*"
 pandas = "*"
+
 
 [dev-packages]
 
